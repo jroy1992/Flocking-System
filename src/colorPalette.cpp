@@ -99,45 +99,17 @@ colorPalette::colorPalette(Target _tar, size_t num)
         m_targets.push_back(_tar);
 }
 
-//void colorPalette::allotBrush(int &_size)
-//{
-//    std::uniform_int_distribution<int> randSize(0.25,1.5);
-//    _size = randSize(gen);
-
-//    if(_size >= 1 && _size <= 2)
-//    {
-//        _size = 1.5;
-//    }
-//    if(_size > 2 && _size <= 3)
-//    {
-//        _size = 3;
-//    }
-//    if(_size > 3 && _size <= 5)
-//    {
-//        _size = 4.5;
-//    }
-//    if(_size > 5 && _size <= 7)
-//    {
-//        _size = 6;
-//    }
-//    if(_size > 7)
-//    {
-//        _size = 9;
-//    }
-//}
 
 void colorPalette::changeColor(ngl::Vec3 & _pos, float &_r, float &_g, float &_b)
 {
-    //allotBrush(_size);
-
     for(size_t i=0; i<m_targets.size(); i++)
     {
-        float d = _pos.dist(_pos,m_targets[i].getPos());
+        float d = wrapp.dist(_pos,m_targets[i].getPos());
         if((d>0) && (d<m_targets[i].getBoundary()))
         {
-             _r = m_targets[i].getR();
-             _g = m_targets[i].getG();
-             _b = m_targets[i].getB();
+             _r = m_targets[i].m_tr;
+             _g = m_targets[i].m_tg;
+             _b = m_targets[i].m_tb;
         }
     }
 }

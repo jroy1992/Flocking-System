@@ -18,27 +18,21 @@ CONFIG-=app_bundle
 # Auto include all .cpp files in the project src directory (can specifiy individually if required)
 SOURCES+= $$PWD/src/main.cpp \
           $$PWD/src/NGLScene.cpp \
-          $$PWD/src/NGLSceneMouseControls.cpp \
           $$PWD/src/Flock.cpp \
           $$PWD/src/Boid.cpp \
           $$PWD/src/Target.cpp \
           $$PWD/src/colorPalette.cpp \
           $$PWD/src/FlowField.cpp \
-          $$PWD/src/noise.cpp \
-          $$PWD/src/Image.cpp \
           $$PWD/src/wrapNGL.cpp \
 
 # same for the .h files
 HEADERS+= $$PWD/include/NGLScene.h \
-          $$PWD/include/WindowParams.h \
           $$PWD/include/Flock.h \
           $$PWD/include/Boid.h \
           $$PWD/include/Target.h \
           $$PWD/include/colorPalette.h \
           $$PWD/include/Path.h \
           $$PWD/include/FlowField.h \
-          $$PWD/include/noise.h \
-          $$PWD/include/Image.h \
           $$PWD/include/wrapNGL.h \
 
 linux:QMAKE_CXXFLAGS+=$$system(Magick++-config --cppflags )
@@ -71,7 +65,7 @@ CONFIG += console
 #}
 NGLPATH=$$(NGLDIR)
 isEmpty(NGLPATH){ # note brace must be here
-	message("including $HOME/NGL")
+        message("including $HOME/NGL")
 	include($(HOME)/NGL/UseNGL.pri)
 }
 else{ # note brace must be here

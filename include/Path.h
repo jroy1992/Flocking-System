@@ -15,6 +15,7 @@ public:
         addPoints();
     }
 
+    // setting up target points for the boids to follow
     void addPoints()
     {
         ngl::Vec3 start(0.0,-10,0.0);
@@ -40,7 +41,6 @@ public:
         ngl::Vec3 point9(11.0,2.0,0.0);
         m_points.push_back(point9);
     }
-
 };
 
 #endif

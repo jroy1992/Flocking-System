@@ -8,6 +8,7 @@ class Target
 public:
     Target() {}
 
+    // to set up a new target at a certain position with a specific color
     Target(ngl::Vec3 _pos, float _r, float _g, float _b)
     {
         m_tposition = _pos;
@@ -16,13 +17,11 @@ public:
         m_tb = _b;
     }
 
+    // changing the target's present color
     void setTColor(float _r, float _g, float _b);
 
+    // chaging the target's present position
     void changePosition(ngl::Vec3 _newPos);
-
-    float getR() const;
-    float getG() const;
-    float getB() const;
 
     ngl::Vec3 getPos()
     {
@@ -44,6 +43,7 @@ public:
     float m_tr;
     float m_tg;
     float m_tb;
+
 private:
     ngl::Vec3 m_tposition;
     float m_tboundary = 3.0f;

@@ -12,21 +12,3 @@ void Target::changePosition(ngl::Vec3 _newPos)
 {
     m_tposition = _newPos;
 }
-
-
-float Target::getR()const
-{
-    return m_tr;
-}
-
-
-float Target::getG()const
-{
-    return m_tg;
-}
-
-
-float Target::getB()const
-{
-    return m_tb;
-}

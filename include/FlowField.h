@@ -1,8 +1,7 @@
-#ifndef FLOWFIELD_H
-#define FLOWFIELD_H
+#ifndef FLOWFIELD_H_
+#define FLOWFIELD_H_
+
 #include <ngl/Vec3.h>
-#include"noise.h"
-#include <iostream>
 #include <vector>
 
 class FlowField
@@ -11,26 +10,29 @@ protected:
     int rows;
     int columns;
     int resolution = 1;
-    int m_height;
-    int m_width;
-    noise::Perlin Pnoise;
 
-    std::vector<std::vector<ngl::Vec3>> m_grid;
+    // 2D vectors to store grid information where the flow fields will be laid out
+    std::vector<std::vector<ngl::Vec3>> m_random;
+    std::vector<std::vector<ngl::Vec3>> m_csWave;
+
 public:
     FlowField() {}
-    FlowField(int r)
+    FlowField(int r, int choice)
     {
         resolution = r;
         columns = 1024 / resolution;
-        //std::cout<<"columns = "<<columns;
         rows = 720 / resolution;
-        //std::cout<<"rows = "<<rows;
-        //m_grid = new PVector* [rows*columns];
-        init();
+
+        init(choice);
     }
 
-    void init();
+    // initialize the flow field
+    void init(int);
+
+    // to constrain the position of the boid between window boundaries
     int constrain(int, int, int);
-    ngl::Vec3 lookup(ngl::Vec3);
+
+    // returns vector on the grid at the boid's position
+    ngl::Vec3 lookup(ngl::Vec3, int);
 };
 #endif

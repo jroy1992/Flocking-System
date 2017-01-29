@@ -5,7 +5,6 @@
 #include "Path.h"
 #include "FlowField.h"
 #include <vector>
-#include <iostream>
 #include "wrapNGL.h"
 
 class Boid
@@ -15,15 +14,20 @@ public:
     ngl::Vec3 m_position;
     ngl::Vec3 m_velocity;
     ngl::Vec3 m_acceleration;
+
+    // initial light greyish color for the boids
     float m_r = 0.8f;
     float m_g = 0.8f;
     float m_b = 0.8f;
 
     float m_maxspeed;
     float m_maxforce;
-    int pTargetPoint = 0;
+
     Path p;
-    //const Flock *m_flock;
+    // for path following: points set on the path at each turning
+    int pTargetPoint = 0;
+
+    int ffchoice = 0;
 
     Boid():m_velocity(1.0f,1.0f,0.0f),m_acceleration(0.0f,0.0f,0.0f){}
 
@@ -35,17 +39,15 @@ public:
 
     wrapNGL wrap;
 
-    void run(std::vector<Boid> &);
+    void run(std::vector<Boid> &, char);
 
     void applyForce(ngl::Vec3);
 
-    void flock(std::vector<Boid> &);
+    void flock(std::vector<Boid> &, char);
 
     void update();
 
     void borders();
-
-    //void draw() const;
 
     ngl::Vec3 seek(ngl::Vec3);
 
@@ -57,17 +59,9 @@ public:
 
     ngl::Vec3 swarm(std::vector<Boid> &);
 
-    void view(std::vector<Boid> &);
-
     ngl::Vec3 followPath(Path);
 
-    ngl::Vec3 follow();
-
-    void getNormalClockwise();
-
-    void getNormalAntiClockwise();
-
-    float angleBetween(ngl::Vec3,ngl::Vec3);
+    ngl::Vec3 follow(int);
 
 };
 

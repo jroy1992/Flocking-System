@@ -7,7 +7,6 @@
 #include <ngl/Camera.h>
 #include "Flock.h"
 #include "colorPalette.h"
-#include "Image.h"
 #include <QOpenGLWindow>
 #include "WindowParams.h"
 //----------------------------------------------------------------------------------------------------------------------
@@ -58,57 +57,29 @@ private:
     //----------------------------------------------------------------------------------------------------------------------
     void keyPressEvent(QKeyEvent *_event);
     //----------------------------------------------------------------------------------------------------------------------
-    /// @brief this method is called every time a mouse is moved
-    /// @param _event the Qt Event structure
-    //----------------------------------------------------------------------------------------------------------------------
-    void mouseMoveEvent (QMouseEvent * _event );
-    //----------------------------------------------------------------------------------------------------------------------
-    /// @brief this method is called everytime the mouse button is pressed
-    /// inherited from QObject and overridden here.
-    /// @param _event the Qt Event structure
-    //----------------------------------------------------------------------------------------------------------------------
-    void mousePressEvent ( QMouseEvent *_event);
-    //----------------------------------------------------------------------------------------------------------------------
-    /// @brief this method is called everytime the mouse button is released
-    /// inherited from QObject and overridden here.
-    /// @param _event the Qt Event structure
-    //----------------------------------------------------------------------------------------------------------------------
-    void mouseReleaseEvent ( QMouseEvent *_event );
 
-    //----------------------------------------------------------------------------------------------------------------------
-    /// @brief this method is called everytime the mouse wheel is moved
-    /// inherited from QObject and overridden here.
-    /// @param _event the Qt Event structure
-    //----------------------------------------------------------------------------------------------------------------------
-    void wheelEvent( QWheelEvent *_event);
-    /// @brief windows parameters for mouse control etc.
     WinParams m_win;
     /// position for our model
     ngl::Vec3 m_modelPos = ngl::Vec3(5.0f,20.0f,0.0f);
     /// camera transform matrix
-    ngl::Mat4 m_view;
-    /// camera projection matrix
-    ngl::Mat4 m_projection;
 
+
+    /// VAO for the boid mesh
     std::unique_ptr<ngl::AbstractVAO> m_vao;
-    std::unique_ptr<ngl::AbstractVAO> m_vaoMesh;
-    std::unique_ptr<ngl::AbstractVAO> m_vaoImage;
+
     /// our camera
     ngl::Camera m_cam;
+    /// transformation for the boid
     ngl::Transformation m_trans;
+    /// transformation for the color targets
     ngl::Transformation m_transTar;
-    ngl::Transformation m_transImage;
 
-    void flocking();
-    void timerEvent(QTimerEvent *);
-
-    size_t m_nVerts;
 
     Boid bd = Boid(m_modelPos);
     Flock f = Flock(bd,500);
     colorPalette cP;
-    Image image = Image(1024,720);
 
+    ///build the VAO
     void buildVAO();
 };
 

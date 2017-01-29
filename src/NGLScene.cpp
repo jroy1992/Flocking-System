@@ -4,7 +4,7 @@
 #include "NGLScene.h"
 #include <ngl/ShaderLib.h>
 #include <ngl/VAOFactory.h>
-#include<ngl/SimpleVAO.h>
+#include <ngl/SimpleVAO.h>
 #include <ngl/NGLInit.h>
 #include <iostream>
 
@@ -22,76 +22,12 @@ NGLScene::~NGLScene()
 }
 
 
-
 void NGLScene::resizeGL(int _w , int _h)
 {
   m_cam.setShape( 45.0f, static_cast<float>( _w ) / _h, 0.05f, 350.0f );
   m_win.width  = static_cast<int>( _w * devicePixelRatio() );
   m_win.height = static_cast<int>( _h * devicePixelRatio() );
 }
-
-
-
-//void NGLScene::buildMesh(ngl::Real _w, ngl::Real _d, size_t _stepsW, size_t _stepsD)
-//{
-//  std::vector<ngl::Vec3> data;
-
-//  // plane origin =0,0,0
-//  // extents -W / 2 -> +W / 2
-//  // -D /2 -> +D/2
-//  ngl::Real w2=_w / 0.5f;
-//  ngl::Real d2=_d / 0.5f;
-//  // now for the steps in w and d
-//  ngl::Real wStep=_w/_stepsW;
-//  ngl::Real dStep=_d/_stepsD;
-
-//  ngl::Vec3 vert;
-//  vert.m_z=0.0f;
-
-//  for(ngl::Real d=-d2; d<d2; d+=dStep)
-//  {
-//    for(ngl::Real w=-w2; w<w2; w+=wStep)
-//    {
-//      // first triangle
-//      vert.m_x=w; vert.m_y=d+dStep; // V1
-//      data.push_back(vert);
-//      vert.m_x=w+wStep; vert.m_y=d+dStep; // V2
-//      data.push_back(vert);
-//      vert.m_x=w; vert.m_y=d; // V3
-//      data.push_back(vert);
-
-//      vert.m_x=w+wStep; vert.m_y=d+dStep;
-//      data.push_back(vert);
-//      vert.m_x=w+wStep; vert.m_y=d;
-//      data.push_back(vert);
-//      vert.m_x=w; vert.m_y=d;
-//      data.push_back(vert);
-//    }
-//  }
-
-//  m_nVerts=data.size();
-
-//  m_vaoMesh.reset(ngl::VAOFactory::createVAO(ngl::simpleVAO,GL_POINTS));
-//  m_vaoMesh->bind();
-//  m_vaoMesh->setData(ngl::AbstractVAO::VertexData(data.size()*sizeof(ngl::Vec3),
-//                                              data[0].m_x));
-//  m_vaoMesh->setVertexAttributePointer(0,3,GL_FLOAT,0,0);
-//  m_vaoMesh->setNumIndices(data.size());
-//  m_vaoMesh->unbind();
-//}
-
-
-//void NGLScene::buildImage()
-//{
-//    //image.setBackground(1.0f,1.0f,1.0f);
-//    m_vaoImage.reset(ngl::VAOFactory::createVAO(ngl::simpleVAO,GL_LINE));
-//    m_vaoImage->bind();
-//    m_vaoImage->setData(ngl::AbstractVAO::VertexData(image.m_height*image.m_width*sizeof(float),
-//                                                image.m_data[0]));
-//    m_vaoImage->setVertexAttributePointer(0,3,GL_FLOAT,0,0);
-//    m_vaoImage->setNumIndices(image.m_height*image.m_width);
-//    m_vaoImage->unbind();
-//}
 
 
 void NGLScene::buildVAO()
@@ -112,7 +48,7 @@ void NGLScene::buildVAO()
     ngl::Vec3(0.5,0,1)
 
   };
-  std::cout<<"Initial "<<verts.size()<<'\n';
+
   ngl::Vec3 n=ngl::calcNormal(verts[2],verts[1],verts[0]);
   verts.push_back(n);
   verts.push_back(n);
@@ -132,13 +68,6 @@ void NGLScene::buildVAO()
   verts.push_back(n);
   verts.push_back(n);
 
-
-//  for(int i=0; i<12*3; ++i)
-//    {
-//      verts[i]*=0.1;
-//    }
-
-  std::cout<<"sizeof(verts) "<<sizeof(verts)<<" sizeof(ngl::Vec3) "<<sizeof(ngl::Vec3)<<"\n";
   // create a vao as a series of GL_TRIANGLES
   m_vao.reset(ngl::VAOFactory::createVAO(ngl::simpleVAO,GL_TRIANGLES) );
   m_vao->bind();
@@ -149,13 +78,13 @@ void NGLScene::buildVAO()
 
   m_vao->setVertexAttributePointer(0,3,GL_FLOAT,0,0);
 
-    // now we set the attribute pointer to be 2 (as this matches normal in our shader)
+  // now we set the attribute pointer to be 2 (as this matches normal in our shader)
   // as we cast to ngl::Real for offset use 12 * 3 (as in x,y,z is 3 floats)
-  //m_vao->setVertexAttributePointer(2,3,GL_FLOAT,0,12*3);
+  // m_vao->setVertexAttributePointer(2,3,GL_FLOAT,0,12*3);
   // divide by 2 as we have both verts and normals
   m_vao->setNumIndices(verts.size()/2);
 
- // now unbind
+  // now unbind
   m_vao->unbind();
 }
 
@@ -167,7 +96,7 @@ void NGLScene::initializeGL()
   // be done once we have a valid GL context but before we call any GL commands. If we dont do
   // this everything will crash
   ngl::NGLInit::instance();
-  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			   // Grey Background
+  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			   // White Background
   // enable depth testing for drawing
   glEnable(GL_DEPTH_TEST);
   // enable multisampling for smoother drawing
@@ -186,81 +115,15 @@ void NGLScene::initializeGL()
   // set the shape using FOV 45 Aspect Ratio based on Width and Height
   // The final two are near and far clipping planes of 0.5 and 10
   m_cam.setShape(60,720.0f/576.0f,0.5f,150);
-
-//  ngl::ShaderLib *shader = ngl::ShaderLib::instance();
-//  shader->use("nglColourShader");
-//  shader->setUniform("Colour",0.0f,1.0f,1.0f,1.0f);
-  //buildMesh(60.0f,60.0f,40,40 );
-  //buildImage();
-  //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-
-  startTimer(500);
 }
 
 
 void NGLScene::paintGL()
 {
-
-
   // clear the screen and depth buffer
-  //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glViewport(0,0,m_win.width,m_win.height);
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
-//  shader->use("nglColourShader");
-//  shader->setUniform("Colour",0.0f,0.5f,1.0f,1.0f);
-
-//  for (Boid &b : f.m_boids)
-//  {
-//      float x = (b.m_position.m_x + 18)/36*1024;
-//      float y = (b.m_position.m_y + 12)/24*720;
-//      image.setPixel(x,y,b.m_r,b.m_g,b.m_b);
-//      std::cout<<"x: "<<x<<"y: "<<y<<'\n';
-//      //x *= image
-//  }
-  //for loop
-    //convert boid[x].position.x to 0 -> image._width
-    //convert boid[x].position.y to 0 -> image._height
-    //image.setPixel(boid[x].x, boid[x].y,R,G,B
-//  shader->use("nglColourShader");
-//  shader->setUniform("Colour",1.0f,1.0f,1.0f,1.0f);
-//  //buildMesh(60.0f,60.0f,40,40 );
-//  buildImage();
-//  m_vaoImage->bind();
-//  m_vaoImage->draw();
-//  image.setBackground(1.0f,1.0f,1.0f);
-//  m_vaoImage->unbind();
-
-
-
-
-
-//  m_vaoMesh->bind();
-//  m_vaoMesh->draw();
-//  m_vaoMesh->unbind();
-
-//  ngl::Mat4 MVPImage;
-//  ngl::Mat3 normalMatrixImage;
-//  ngl::Mat4 MVImage;
-//  ngl::Mat4 MImage;
-//  ngl::Vec3 m_posImage;
-//  MImage = m_transImage.getMatrix();
-//  MVImage = MImage*m_cam.getViewMatrix();
-//  MVPImage = MVImage*m_cam.getProjectionMatrix();
-//  shader->setShaderParamFromMat4("MVP",MVPImage);
-
-//  for(size_t i=0; i<image.m_width; i++)
-//  {
-//      for(size_t j=0; j<image.m_height; j++)
-//      {
-//          shader->use("nglColourShader");
-//          shader->setUniform("Colour",1.0f,1.0f,1.0f,1.0f);
-//          m_posImage = ;
-//      }
-//  }
-
-
   ngl::Mat4 MVP;
-  ngl::Mat3 normalMatrix;
   ngl::Mat4 MV;
   ngl::Mat4 M;
   ngl::Vec3 m_pos;
@@ -271,7 +134,6 @@ void NGLScene::paintGL()
 
   for(size_t i=0; i<f.m_boids.size();i++)
   {
-
       cP.changeColor(f.m_boids[i].m_position,f.m_boids[i].m_r,f.m_boids[i].m_g,f.m_boids[i].m_b);
 
       shader->use("nglColourShader");
@@ -285,16 +147,9 @@ void NGLScene::paintGL()
       M = m_trans.getMatrix();
       MV = M*m_cam.getViewMatrix();
       MVP = MV*m_cam.getProjectionMatrix();
-    //      V // get cam view
-    //      P // get cam proj;
-    //              MV;
-    //      MVP;
-      //normalMatrix=MV;
-      //normalMatrix.inverse();
-      //shader->setShaderParamFromMat4("MV",MV);
+
       shader->setShaderParamFromMat4("MVP",MVP);
-      //shader->setShaderParamFromMat3("normalMatrix",normalMatrix);
-      //ngl::VAOPrimitives::instance()->draw("sphere");
+
       m_vao->draw();
       m_trans.setScale(0.25,0.5,0.25);
       m_trans.addRotation(f.m_boids[i].m_velocity.m_x,f.m_boids[i].m_velocity.m_y,0.0);
@@ -303,18 +158,15 @@ void NGLScene::paintGL()
   m_vao->unbind();
 
   ngl::Mat4 MVPTar;
-  ngl::Mat3 normalMatrixTar;
   ngl::Mat4 MVTar;
   ngl::Mat4 MTar;
   ngl::Vec3 m_posTar;
   ngl::VAOPrimitives::instance()->createSphere("sphereTAR",1.2f,20);
-  //shader->use("nglColourShader");
 
   for(size_t i=0; i<cP.m_targets.size();i++)
   {
       shader->use("nglColourShader");
       shader->setUniform("Colour",cP.m_targets[i].m_tr,cP.m_targets[i].m_tg,cP.m_targets[i].m_tb,1.0f);
-      //std::cout<<"R: "<<cP.m_targets[i].m_tr<<"G: "<<cP.m_targets[i].m_tg<<"B: "<<cP.m_targets[i].m_tb;
       //get the position of the ith boid
       m_posTar = cP.m_targets[i].getPos();
       // set the tranfrom based on the position of the boid
@@ -323,25 +175,35 @@ void NGLScene::paintGL()
       MTar = m_transTar.getMatrix();
       MVTar = MTar*m_cam.getViewMatrix();
       MVPTar = MVTar*m_cam.getProjectionMatrix();
-//      V // get cam view
-//      P // get cam proj;
-//              MV;
-//      MVP;
-      //normalMatrixTar=MVTar;
-      //normalMatrixTar.inverse();
-      //shader->setShaderParamFromMat4("MV",MVTar);
       shader->setShaderParamFromMat4("MVP",MVPTar);
-      //shader->setShaderParamFromMat3("normalMatrix",normalMatrixTar);
-      //ngl::VAOPrimitives::instance()->createSphere("sphereTAR",1.2f,10);
       ngl::VAOPrimitives::instance()->draw("sphereTAR");
-      //m_vao->draw();
   }
 
-//  m_vao->draw();
-//  m_vao->bind();
-//  m_vao->unbind();
+  if(f.m_choice == 's')         // activate separation
+      f.runflock('s');
+  else if(f.m_choice == 'a')    // activate alignment
+      f.runflock('a');
+  else if(f.m_choice == 'c')    // activate cohesion
+      f.runflock('c');
+  else if(f.m_choice == 'f')    // activate flocking
+      f.runflock('f');
 
-  f.runflock();
+  // would see the path following with clarity when choosen as the first option.
+  else if(f.m_choice == 'p')    // activate path following.
+      f.runflock('p');
+
+  /*  Preferable to choose both the flowfields after all other behaviors have been worked with
+   * as it might slow down the program.
+   * These both for the moment have been commented out in the Boid flock().
+  */
+  else if(f.m_choice == 'l')    // activate random flow field following. Prefer to choose both the flowfields after all other behaviors
+      f.runflock('l');
+  else if(f.m_choice == 'm')    // acticate cos sin wave flow field following
+      f.runflock('m');
+
+  else if(f.m_choice == 'q')    // clear the screen
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   update();
 }
 
@@ -351,52 +213,35 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
 {
   // this method is called every time the main window recives a key event.
   // we then switch on the key value and set the camera in the GLWindow
-  switch (_event->key())
-  {
-  // escape key to quite
-  case Qt::Key_Escape : QGuiApplication::exit(EXIT_SUCCESS); break;
-  case Qt::Key_Space :
-      m_win.spinXFace=0;
-      m_win.spinYFace=0;
-      m_modelPos.set(ngl::Vec3::zero());
-      break;
-  case Qt::Key_S:
-      image.saveImage();
-      break;
-  default : break;
-  }
-  // finally update the GLWindow and re-draw
-
-    //update();
+    switch (_event->key())
+    {
+    // escape key to quite
+    case Qt::Key_Escape : QGuiApplication::exit(EXIT_SUCCESS); break;
+    case Qt::Key_S:
+        f.m_choice = 's';
+        break;
+    case Qt::Key_A:
+        f.m_choice = 'a';
+        break;
+    case Qt::Key_C:
+        f.m_choice = 'c';
+        break;
+    case Qt::Key_F:
+        f.m_choice = 'f';
+        break;
+    case Qt::Key_P:
+        f.m_choice = 'p';
+        break;
+    case Qt::Key_L:
+        f.m_choice = 'l';
+        break;
+    case Qt::Key_M:
+        f.m_choice = 'm';
+        break;
+    case Qt::Key_Q:
+        f.m_choice = 'q';
+        break;
+    default : break;
+    }
 }
 
-void NGLScene::timerEvent(QTimerEvent *)
-{
-//    static float time;
-//    time += 0.1f;
-//    m_absVAO->bind();
-
-//    ngl::Vec3 *ptr =static_cast<ngl::Vec3 *>
-//         ( glMapBuffer(GL_ARRAY_BUFFER,GL_READ_WRITE) );
-
-
-
-//    glUnmapBuffer(GL_ARRAY_BUFFER);
-//    m_absVAO->unbind();
-//    std::vector<ngl::Vec3> verts;
-//    for(size_t i = 0; i<f.m_boids.size(); i++)
-//    {
-//        verts.push_back(f.m_boids[i].m_position);
-//    }
-//    m_vao->bind();
-
-//    m_vao->setData(ngl::SimpleVAO::VertexData(f.m_boids.size()*sizeof(ngl::Vec3),verts[0].m_x));
-
-//    m_vao->unbind();
-
-//    glBindBuffer(GL_ARRAY_BUFFER, posBuffer);
-//        glBufferData(GL_ARRAY_BUFFER, maxParticles * 3 * sizeof(GLfloat),NULL,GL_DYNAMIC_DRAW);
-//        glBufferSubData(GL_ARRAY_BUFFER, 0, particleCount * sizeof(GLfloat) *3, particle_position_data);
-    //f.runflock();
-    //update();
-}
