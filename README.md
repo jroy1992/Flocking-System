@@ -1,7 +1,9 @@
 README:
 This is an implementation of flocking behaviors to perform procedural painting.
 The window opens with all the boids positioned in the proximity of the origin. The behaviors start with the keyPress event.
- #Key controls for implementing behaviors:
+
+#Key controls for implementing behaviors:
+
 ‘s’ or ‘S’ = separation
 
 ‘a’ or ‘A’ = alignment
